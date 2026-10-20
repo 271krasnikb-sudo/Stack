@@ -1,6 +1,5 @@
 import java.util.Objects;
 
-@SuppressWarnings("unchecked")
 public class ArrayStack<T> implements StackInterface<T>
 {
 
