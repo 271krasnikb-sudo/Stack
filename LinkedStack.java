@@ -19,7 +19,11 @@ public class LinkedStack<T> implements StackInterface<T> {
 
     public T peek() throws StackUnderflowException
     {
-       return elements.getLink().getInfo();
+        if (empty())
+        {
+            throw new StackUnderflowException("Stack is empty");
+        }
+        return elements.getInfo();
     }
 
     public T pop() throws StackUnderflowException
@@ -28,34 +32,37 @@ public class LinkedStack<T> implements StackInterface<T> {
         {
             throw new StackUnderflowException("Stack is empty");
         }
-        T item = elements.getLink().getInfo();
-        elements.setLink(elements.getLink().getLink());
+        T item = elements.getInfo();
+        elements = elements.getLink();
         size--;
         return item;
     }
 
     public T push(T item)
     {
-        LLNode newLink = new LLNode<T>(item);
-        newLink.setLink(elements.getLink());
-        elements.setLink(newLink);
+        LLNode<T> newLink = new LLNode<>(item);
+        newLink.setLink(elements);
+        elements = newLink;
+        size++;
         return item;
     }
 
     public void clear()
     {
-        elements.setLink(null);
+        elements = null;
         size = 0;
     }
 
     public int search(Object item)
     {
-        LLNode temp = elements;
-        for(int i = 0; i<size;i++){
-            if(temp.getInfo().equals(item)){
-                return i;
+        LLNode<T> current = elements;
+        for (int position = 1; current != null; position++)
+        {
+            if (item == null ? current.getInfo() == null : item.equals(current.getInfo()))
+            {
+                return position;
             }
-            temp = temp.getLink();
+            current = current.getLink();
         }
         return -1;
     }
